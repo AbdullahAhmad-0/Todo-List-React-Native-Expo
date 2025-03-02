@@ -1,11 +1,41 @@
-import React from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from "react-native";
 
-const Home = ({ navigation }) => {
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+
+const Home = ({ navigation, GlobalState }) => {
+    const {
+        toDoList,
+        setToDoList,
+        task,
+        setTask,
+        chosenTask,
+        setChosenTask,
+    } = GlobalState;
+
+    useEffect(() => {
+        setToDoList(prevState => [...prevState, { id: prevState.length + 1, task: "task name 2" }]);
+    }, []);
+
+    const handleSaveTask = () => {
+        const index = toDoList.length+1;
+        setToDoList(prevState => [...prevState, { id: index, task: task }]);
+        setTask("");
+    };
+
+    const handleChooseTask = (item) => {
+        setChosenTask(item);
+        navigation.navigate("ChosenTask");
+    };
+
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Home Screen</Text>
-            <Button title="Open NewScreen" onPress={() => navigation.navigate("NewScreen")} />
+            <Header />
+            <View style={styles.body}>
+
+            </View>
+            <Footer navigation={navigation} />
         </View>
     );
 };
@@ -16,11 +46,20 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-    title: {
-        fontSize: 24,
+    body: {
+        flex: 8,
+        width:'100%',
         fontWeight: "bold",
         marginBottom: 20,
     },
+    header: {
+        flex: 1,
+        width:'100%',
+    },
+    footer: {
+        flex: 1,
+        width:'100%',
+    }
 });
 
 export default Home;
